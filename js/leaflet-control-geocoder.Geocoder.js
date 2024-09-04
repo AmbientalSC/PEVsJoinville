@@ -10,9 +10,9 @@ module.exports = {
 			collapsed: true,
 			expand: 'touch', // options: touch, click, anythingelse
 			position: 'topright',
-			placeholder: 'Usar endereço + nº + bairro ou CEP...',
+			placeholder: 'Pesquise o endereço completo.',
 			errorMessage: 'Nothing found.',
-			suggestMinLength: 3,
+			suggestMinLength: 5,
 			suggestTimeout: 250,
 			defaultMarkGeocode: true
 		},
