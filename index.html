@@ -211,25 +211,8 @@
             });
             var popupContent = '<table>\
                     <tr>\
-                        <th scope="row">ID:</th>\
-                        <td>' + (feature.properties['ID'] !== null ? autolinker.link(feature.properties['ID'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">PEV:</th>\
                         <td>' + (feature.properties['PEV'] !== null ? autolinker.link(feature.properties['PEV'].toLocaleString()) : '') + '</td>\
-                    </tr>\
                     <tr>\
-                        <th scope="row">ENDEREÇO:</th>\
-                        <td>' + (feature.properties['ENDERE_O'] !== null ? autolinker.link(feature.properties['ENDERE_O'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">COMPLEMENTO:</th>\
-                        <td>' + (feature.properties['COMPLEMENT'] !== null ? autolinker.link(feature.properties['COMPLEMENT'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">LINK:</th>\
-                        <td>' + (feature.properties['LINK'] !== null ? autolinker.link(feature.properties['LINK'].toLocaleString()) : '') + '</td>\
-                    </tr>\
                 </table>';
             layer.bindPopup(popupContent, {maxHeight: 400});
             var popup = layer.getPopup();
@@ -445,65 +428,110 @@
           }
           })
         }
-            document.getElementById("menu").appendChild(
-                document.createElement("div"));
-            var div_PEV = document.createElement('div');
-            div_PEV.id = "div_PEV";
-            div_PEV.className= "filterselect";
-            document.getElementById("menu").appendChild(div_PEV);
-            sel_PEV = document.createElement('select');
-            sel_PEV.multiple = true;
-            sel_PEV.size = 3;
-            sel_PEV.id = "sel_PEV";
-            var PEV_options_str = "<option value='Ponto de Entrega Voluntária - Caçamba' unselected>Caçamba</option>";
-            sel_PEV.onchange = function(){filterFunc()};
-            PEV_options_str  += '<option value="Ponto de coleta - contentor 1000 l">Contentor 1000 l</option>';
-            PEV_options_str  += '<option value="Ponto de coleta - contentor 120 l">Contentor 120 l</option>';
-            sel_PEV.innerHTML = PEV_options_str;
-            div_PEV.appendChild(sel_PEV);
-            var lab_PEV = document.createElement('div');
-            lab_PEV.className = 'filterlabel';
-            div_PEV.appendChild(lab_PEV);
-            var reset_PEV = document.createElement('div');
-            reset_PEV.innerHTML = 'Limpar filtro';
-            reset_PEV.className = 'filterlabel';
-            reset_PEV.onclick = function() {
-                var options = document.getElementById("sel_PEV").options;
-                for (var i=0; i < options.length; i++) {
-                    options[i].selected = false;
+        document.getElementById("menu").appendChild(document.createElement("div"));
+
+// Div para PEV
+        var div_PEV = document.createElement('div');
+        div_PEV.id = "div_PEV";
+        div_PEV.className = "filterselect";
+        document.getElementById("menu").appendChild(div_PEV);
+
+        // Criação do select para PEV
+        sel_PEV = document.createElement('select');
+        sel_PEV.multiple = true;
+        sel_PEV.size = 3;
+        sel_PEV.id = "sel_PEV";
+        var PEV_options_str = "<option value='Ponto de Entrega Voluntária - Caçamba' unselected>Caçamba</option>";
+        PEV_options_str += '<option value="Ponto de coleta - contentor 1000 l">Contentor 1000 l</option>';
+        PEV_options_str += '<option value="Ponto de coleta - contentor 120 l">Contentor 120 l</option>';
+        sel_PEV.innerHTML = PEV_options_str;
+
+        // Aplicar cores às opções
+        var PEV_colors = {
+          "Ponto de Entrega Voluntária - Caçamba": "rgba(18, 30, 249, 0.5)",    // Amarelo com 70% de opacidade
+          "Ponto de coleta - contentor 1000 l": "rgba(250,129,30, 0.5)",       // Azul com 70% de opacidade
+          "Ponto de coleta - contentor 120 l": "rgba(149,208,39, 0.5)"       // Rosa com 70% de opacidade
+        };
+        applyColorsToOptions(sel_PEV, PEV_colors);
+
+        sel_PEV.onchange = function () {
+            filterFunc();
+        };
+        div_PEV.appendChild(sel_PEV);
+
+        var lab_PEV = document.createElement('div');
+        lab_PEV.className = 'filterlabel';
+        div_PEV.appendChild(lab_PEV);
+
+        var reset_PEV = document.createElement('div');
+        reset_PEV.innerHTML = 'Limpar filtro';
+        reset_PEV.className = 'filterlabel';
+        reset_PEV.onclick = function () {
+            var options = document.getElementById("sel_PEV").options;
+            for (var i = 0; i < options.length; i++) {
+                options[i].selected = false;
+            }
+            filterFunc();
+        };
+        div_PEV.appendChild(reset_PEV);
+
+        document.getElementById("menu").appendChild(document.createElement("div"));
+
+        // Div para TIPO DE VT
+        var div_TIPO_DE_VT = document.createElement('div');
+        div_TIPO_DE_VT.id = "div_TIPO_DE_VT";
+        div_TIPO_DE_VT.className = "filterselect";
+        document.getElementById("menu").appendChild(div_TIPO_DE_VT);
+
+        // Criação do select para TIPO DE VT
+        sel_TIPO_DE_VT = document.createElement('select');
+        sel_TIPO_DE_VT.multiple = true;
+        sel_TIPO_DE_VT.size = 2;
+        sel_TIPO_DE_VT.id = "sel_TIPO_DE_VT";
+        var TIPO_DE_VT_options_str = "<option value='BAÚ' unselected>Baú</option>";
+        TIPO_DE_VT_options_str += '<option value="COMPACTADOR">Compactador</option>';
+        sel_TIPO_DE_VT.innerHTML = TIPO_DE_VT_options_str;
+
+        // Aplicar cores às opções
+        var TIPO_DE_VT_colors = {
+          "BAÚ": "rgba(336,242,59, 0.5)",       // Roxo com 70% de opacidade
+          "COMPACTADOR": "rgba(111,109,235, 0.5)" // Vermelho com 70% de opacidade
+        };
+        applyColorsToOptions(sel_TIPO_DE_VT, TIPO_DE_VT_colors);
+
+        sel_TIPO_DE_VT.onchange = function () {
+            filterFunc();
+        };
+        div_TIPO_DE_VT.appendChild(sel_TIPO_DE_VT);
+
+        var lab_TIPO_DE_VT = document.createElement('div');
+        lab_TIPO_DE_VT.className = 'filterlabel';
+        div_TIPO_DE_VT.appendChild(lab_TIPO_DE_VT);
+
+        var reset_TIPO_DE_VT = document.createElement('div');
+        reset_TIPO_DE_VT.innerHTML = 'Limpar filtro';
+        reset_TIPO_DE_VT.className = 'filterlabel';
+        reset_TIPO_DE_VT.onclick = function () {
+            var options = document.getElementById("sel_TIPO_DE_VT").options;
+            for (var i = 0; i < options.length; i++) {
+                options[i].selected = false;
+            }
+            filterFunc();
+        };
+        div_TIPO_DE_VT.appendChild(reset_TIPO_DE_VT);
+
+        // Função para aplicar cores a cada opção
+        function applyColorsToOptions(selectElement, colors) {
+            var options = selectElement.options;
+            for (var i = 0; i < options.length; i++) {
+                var value = options[i].value;
+                if (colors[value]) {
+                    options[i].style.backgroundColor = colors[value];
+                    options[i].style.color = "#434540"; // Cor do texto branca para contraste
                 }
-                filterFunc();
-            };
-            div_PEV.appendChild(reset_PEV);
-            document.getElementById("menu").appendChild(
-                document.createElement("div"));
-            var div_TIPO_DE_VT = document.createElement('div');
-            div_TIPO_DE_VT.id = "div_TIPO_DE_VT";
-            div_TIPO_DE_VT.className= "filterselect";
-            document.getElementById("menu").appendChild(div_TIPO_DE_VT);
-            sel_TIPO_DE_VT = document.createElement('select');
-            sel_TIPO_DE_VT.multiple = true;
-            sel_TIPO_DE_VT.size = 2;
-            sel_TIPO_DE_VT.id = "sel_TIPO_DE_VT";
-            var TIPO_DE_VT_options_str = "<option value=BAÚ'' unselected>Baú</option>";
-            sel_TIPO_DE_VT.onchange = function(){filterFunc()};
-            TIPO_DE_VT_options_str  += '<option value="COMPACTADOR">Compactador</option>';
-            sel_TIPO_DE_VT.innerHTML = TIPO_DE_VT_options_str;
-            div_TIPO_DE_VT.appendChild(sel_TIPO_DE_VT);
-            var lab_TIPO_DE_VT = document.createElement('div');
-            lab_TIPO_DE_VT.className = 'filterlabel';
-            div_TIPO_DE_VT.appendChild(lab_TIPO_DE_VT);
-            var reset_TIPO_DE_VT = document.createElement('div');
-            reset_TIPO_DE_VT.innerHTML = 'Limpar filtro';
-            reset_TIPO_DE_VT.className = 'filterlabel';
-            reset_TIPO_DE_VT.onclick = function() {
-                var options = document.getElementById("sel_TIPO_DE_VT").options;
-                for (var i=0; i < options.length; i++) {
-                    options[i].selected = false;
-                }
-                filterFunc();
-            };
-            div_TIPO_DE_VT.appendChild(reset_TIPO_DE_VT);
+            }
+        }
+
         </script>
     </body>
 </html>
