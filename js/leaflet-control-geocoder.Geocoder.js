@@ -53,6 +53,13 @@ module.exports = {
 				container);
 			L.DomEvent.disableClickPropagation(this._alts);
 
+			L.DomEvent.addListener(input, 'keydown', function(e) {
+				if (e.key === 'Enter') {
+					e.preventDefault(); // Previne o comportamento padrão ao pressionar Enter
+					this._geocode(e); // Chama a função de geocodificação
+				}
+			}, this);
+
 			L.DomEvent.addListener(input, 'keydown', this._keydown, this);
 			if (this.options.geocoder.suggest) {
 				L.DomEvent.addListener(input, 'input', this._change, this);
