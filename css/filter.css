@@ -4,7 +4,7 @@
     top:10px;
     left: 14px;
     /* transform: translate(-50%, -50%); */
-    z-index: 1000; /* Certifique-se de que o menu esteja na frente do mapa */
+    z-index: 700; /* Certifique-se de que o menu esteja na frente do mapa */
     background-color: rgba(255, 255, 255, 0.752);
     padding: 5px;
     border-radius: 10px;
