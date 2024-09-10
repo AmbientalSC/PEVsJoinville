@@ -7,8 +7,8 @@ module.exports = {
 	"class": L.Control.extend({
 		options: {
 			showResultIcons: false,
-			collapsed: false,
-			expand: 'touch', // options: touch, click, anythingelse
+			collapsed: true,
+			expand: 'click', // options: touch, click, anythingelse
 			position: 'topright',
 			placeholder: 'Pesquise o endereço completo.',
 			errorMessage: 'Nothing found.',
