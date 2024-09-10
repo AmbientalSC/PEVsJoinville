@@ -293,12 +293,15 @@
         });
         bounds_group.addLayer(layer_PEVs_vidro4_2);
         map.addLayer(layer_PEVs_vidro4_2);
+
         var osmGeocoder = new L.Control.Geocoder({
+            geocoder: L.Control.Geocoder.google('AIzaSyCiKpZmnL9TQXOJd9Qbzw2agE9kxnTGZ38', {}),
             collapsed: false,
             position: 'topleft',
             text: 'Search',
-            title: 'Testing'
+            title: 'Testing'  
         }).addTo(map);
+        
         document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
         .className += ' fa fa-search';
         document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
