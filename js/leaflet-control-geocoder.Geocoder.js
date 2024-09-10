@@ -7,12 +7,12 @@ module.exports = {
 	"class": L.Control.extend({
 		options: {
 			showResultIcons: false,
-			collapsed: true,
+			collapsed: false,
 			expand: 'touch', // options: touch, click, anythingelse
 			position: 'topright',
 			placeholder: 'Pesquise o endereço completo.',
 			errorMessage: 'Nothing found.',
-			suggestMinLength: 5,
+			suggestMinLength: Infinity,
 			suggestTimeout: 250,
 			defaultMarkGeocode: true
 		},
