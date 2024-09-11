@@ -2,23 +2,25 @@
 #menu {
     position: absolute;
     top:10px;
-    left: 14px;
+    left: 12px;
     /* transform: translate(-50%, -50%); */
     z-index: 700; /* Certifique-se de que o menu esteja na frente do mapa */
     background-color: rgba(255, 255, 255, 0.752);
     padding: 5px;
     border-radius: 10px;
+    width:266px;
+    cursor: pointer; 
     /* height:60px; */
   }
 
-  @media only screen and (max-width: 600px) {
+  /* @media only screen and (max-width: 600px) {
     #aviso {
         width: 90%; 
         left: 50%;
         top: 24%;
         transform: translate(-50%, -50%);
     }
-}
+} */
 
 
 .filterselect{

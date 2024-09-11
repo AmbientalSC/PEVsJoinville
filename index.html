@@ -21,13 +21,47 @@
             padding: 0;
             margin: 0;
         }
+        #container {
+            top: 35%;
+            position: absolute;
+            z-index: 1000; 
+            padding-left: 10px;
+        }
+            #infoDiv {
+                position: relative;
+                top: 10%;
+                border-radius: 10px;
+                background-color: rgba(255, 255, 255, 0.752);
+                padding: 10px;
+                padding-left: 10px; /* Espaço inicial da borda esquerda */
+                width:266px;
+                display: none;
+              }
+        #streetViewContainer {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            z-index: 1000;
+            padding: 100px;
+            border-radius: 5px;
+            width: 76px;
+            height: 100px;
+            display: none;
+            cursor: pointer;
+        }
         </style>
         <title>Consulta de PEV's</title>
         <link rel="shortcut icon" type="image/jpg" href="icon.ico" />
     </head>
     <body>
-        <div id="map">
-        </div>
+          <!-- <div id="container">
+              <div id="infoDiv"></div>
+          </div> -->
+
+        <div id="streetViewContainer"></div>
+
+        <div id="map"></div>
+
         <script src="js/qgis2web_expressions.js"></script>
         <script src="js/leaflet.js"></script>
         <script src="js/L.Control.Layers.Tree.min.js"></script>
@@ -45,6 +79,8 @@
         <script src="js/wNumb.js"></script>
         <script src="data/ColetaSeletiva_1.js"></script>
         <script src="data/PEVs_vidro4_2.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCiKpZmnL9TQXOJd9Qbzw2agE9kxnTGZ38&callback=initMap" async defer></script>
+
         <script>
         var highlightLayer;
         function highlightFeature(e) {
@@ -295,12 +331,96 @@
         map.addLayer(layer_PEVs_vidro4_2);
 
         var osmGeocoder = new L.Control.Geocoder({
-            geocoder: L.Control.Geocoder.google('AIzaSyCiKpZmnL9TQXOJd9Qbzw2agE9kxnTGZ38', {}),
-            collapsed: false,
-            position: 'topleft',
-            text: 'Search',
-            title: 'Testing'  
+        geocoder: L.Control.Geocoder.google('AIzaSyCiKpZmnL9TQXOJd9Qbzw2agE9kxnTGZ38', {}),
+        collapsed: false,
+        position: 'topleft',
+        text: 'Search',
+        title: 'Testing'
         }).addTo(map);
+          var marker; 
+          var panorama; 
+          function initializeStreetView(latlng) {
+              var streetViewContainer = document.getElementById('streetViewContainer');
+              if (!streetViewContainer) {
+                  console.error('Contêiner do Street View não encontrado.');
+                  return;
+              }
+              streetViewContainer.style.display = 'block'; 
+              if (!panorama) {
+                  panorama = new google.maps.StreetViewPanorama(streetViewContainer, {
+                      position: latlng,
+                      pov: { heading: 210, pitch: 10 },
+                      zoom: 1,
+                      zoomControl: false,
+                      fullscreenControl: false,
+                      mapTypeControl: false,
+                      rotateControl: false,
+                  });
+              } else {
+                  panorama.setPosition(latlng);
+              }
+          }
+
+          osmGeocoder.on('markgeocode', function (e) {
+              var latlng = e.geocode.center;
+              var address = e.geocode.name;
+
+              if (marker) {
+                  map.removeLayer(marker);
+              }
+
+              marker = L.marker(latlng, { draggable: true }).addTo(map)
+                  .bindPopup(`<a href="https://www.google.com/maps?q=&layer=c&cbll=${latlng.lat},${latlng.lng}&cbp=11,0,0,0,0" target="_blank">Mova o marcador para local desejado.</a>`)
+                  .openPopup();
+
+              marker.on('dragend', function () {
+                  var newLatLng = marker.getLatLng();
+                  initializeStreetView(newLatLng);
+                  marker.setPopupContent(`<a href="https://www.google.com/maps?q=&layer=c&cbll=${newLatLng.lat},${newLatLng.lng}&cbp=11,0,0,0,0" target="_blank">Mova o marcador para local desejado.</a>`);
+                  marker.openPopup();
+              });
+
+              initializeStreetView(latlng);
+          });
+
+    //     osmGeocoder.on('markgeocode', function(event) {
+    //     document.getElementById('infoDiv').style.display = 'block';
+    //     document.getElementById("infoDiv").innerHTML = "";
+
+    //     // Obtém as coordenadas do endereço pesquisado
+    //     var latLng = event.geocode.center;        
+    //     var nearestCoordinate = null;
+    //     var shortestDistance = Infinity;
+    //     var address = event.geocode.name;
+
+    //     // Itera sobre todas as features do arquivo json_ColetaSeletiva_1
+    //     json_PEVs_vidro4_2.features.forEach(function(feature) {
+    //         if (feature.geometry.type === "Point") {
+    //             var coordinates = feature.geometry.coordinates;
+                
+    //             // Obtém a distância do ponto até a localização pesquisada
+    //             var distance = L.latLng(coordinates[1], coordinates[0]).distanceTo(latLng);
+                
+    //             // Se esta distância for menor que a menor distância encontrada
+    //             if (distance < 10000 && distance < shortestDistance) {
+    //                 shortestDistance = distance;
+    //                 nearestCoordinate = feature;
+    //             }
+    //         }
+    //     });
+
+    //     // Exibe informações se encontrou uma coordenada próxima
+    //     if (nearestCoordinate) {
+    //         document.getElementById("infoDiv").innerHTML = 
+    //         "<b>Ponto proximo: </b>" + nearestCoordinate.properties.ENDERE_O + "<br>" +
+    //         "<b>Complemento: </b>" + nearestCoordinate.properties.COMPLEMENT + "<br>" +
+    //         "<b>Litragem: </b>" + nearestCoordinate.properties.PEV;
+          
+    //       } else {
+    //         document.getElementById("infoDiv").innerHTML = "Nenhuma coleta seletiva próxima foi encontrada.";
+    //     }
+    // });
+
         
         document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
         .className += ' fa fa-search';
@@ -534,6 +654,7 @@
                 }
             }
         }
+
 
         </script>
     </body>
