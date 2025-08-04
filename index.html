@@ -37,18 +37,6 @@
                 width:266px;
                 display: none;
               }
-        #streetViewContainer {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            z-index: 1000;
-            padding: 100px;
-            border-radius: 5px;
-            width: 76px;
-            height: 100px;
-            display: none;
-            cursor: pointer;
-        }
         </style>
         <title>Consulta de PEV's</title>
         <link rel="shortcut icon" type="image/jpg" href="icon.ico" />
@@ -57,8 +45,6 @@
           <!-- <div id="container">
               <div id="infoDiv"></div>
           </div> -->
-
-        <div id="streetViewContainer"></div>
 
         <div id="map"></div>
 
@@ -79,7 +65,6 @@
         <script src="js/wNumb.js"></script>
         <script src="data/ColetaSeletiva_1.js"></script>
         <script src="data/PEVs_vidro4_2.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgpv3gKMtmUtcNjjjpTVkTTqrb_JnQRhw&callback=initMap" async defer></script>
 
         <script>
         var highlightLayer;
@@ -153,36 +138,7 @@
                 },
                 mouseover: highlightFeature,
             });
-            var popupContent = '<table>\
-                    <tr>\
-                        <th scope="row">ID: </th>\
-                        <td>' + (feature.properties['NAME'] !== null ? autolinker.link(feature.properties['NAME'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">FREQUÊNCIA:</th>\
-                        <td>' + (feature.properties['FREQUENCIA'] !== null ? autolinker.link(feature.properties['FREQUENCIA'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">TURNO:</th>\
-                        <td>' + (feature.properties['TURNO'] !== null ? autolinker.link(feature.properties['TURNO'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">HORÁRIO:</th>\
-                        <td>' + (feature.properties['HORARIO'] !== null ? autolinker.link(feature.properties['HORARIO'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">OPERAÇÃO:</th>\
-                        <td>' + (feature.properties['OPERACAO'] !== null ? autolinker.link(feature.properties['OPERACAO'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">SETOR:</th>\
-                        <td>' +  (feature.properties['SETOR'] !== null ? autolinker.link(feature.properties['SETOR'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">TIPO DE VEÍCULO</th>\
-                        <td>' + (feature.properties['TIPO_DE_VT'] !== null ? autolinker.link(feature.properties['TIPO_DE_VT'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                </table>';
+            var popupContent = '<table>\n                    <tr>\n                        <th scope="row">ID: </th>\n                        <td>' + (feature.properties['NAME'] !== null ? autolinker.link(feature.properties['NAME'].toLocaleString()) : '') + '</td>\n                    </tr>\n                    <tr>\n                        <th scope="row">FREQUÊNCIA:</th>\n                        <td>' + (feature.properties['FREQUENCIA'] !== null ? autolinker.link(feature.properties['FREQUENCIA'].toLocaleString()) : '') + '</td>\n                    </tr>\n                    <tr>\n                        <th scope="row">TURNO:</th>\n                        <td>' + (feature.properties['TURNO'] !== null ? autolinker.link(feature.properties['TURNO'].toLocaleString()) : '') + '</td>\n                    </tr>\n                    <tr>\n                        <th scope="row">HORÁRIO:</th>\n                        <td>' + (feature.properties['HORARIO'] !== null ? autolinker.link(feature.properties['HORARIO'].toLocaleString()) : '') + '</td>\n                    </tr>\n                    <tr>\n                        <th scope="row">OPERAÇÃO:</th>\n                        <td>' + (feature.properties['OPERACAO'] !== null ? autolinker.link(feature.properties['OPERACAO'].toLocaleString()) : '') + '</td>\n                    </tr>\n                    <tr>\n                        <th scope="row">SETOR:</th>\n                        <td>' +  (feature.properties['SETOR'] !== null ? autolinker.link(feature.properties['SETOR'].toLocaleString()) : '') + '</td>\n                    </tr>\n                    <tr>\n                        <th scope="row">TIPO DE VEÍCULO</th>\n                        <td>' + (feature.properties['TIPO_DE_VT'] !== null ? autolinker.link(feature.properties['TIPO_DE_VT'].toLocaleString()) : '') + '</td>\n                    </tr>\n                </table>';
             layer.bindPopup(popupContent, {maxHeight: 400});
             var popup = layer.getPopup();
             var content = popup.getContent();
@@ -245,11 +201,7 @@
                 },
                 mouseover: highlightFeature,
             });
-            var popupContent = '<table>\
-                    <tr>\
-                        <td>' + (feature.properties['PEV'] !== null ? autolinker.link(feature.properties['PEV'].toLocaleString()) : '') + '</td>\
-                    <tr>\
-                </table>';
+            var popupContent = '<table>\n                    <tr>\n                        <td>' + (feature.properties['PEV'] !== null ? autolinker.link(feature.properties['PEV'].toLocaleString()) : '') + '</td>\n                    <tr>\n                </table>';
             layer.bindPopup(popupContent, {maxHeight: 400});
             var popup = layer.getPopup();
             var content = popup.getContent();
@@ -331,57 +283,21 @@
         map.addLayer(layer_PEVs_vidro4_2);
 
         var osmGeocoder = new L.Control.Geocoder({
-        geocoder: L.Control.Geocoder.google('AIzaSyDgpv3gKMtmUtcNjjjpTVkTTqrb_JnQRhw', {}),
-        collapsed: false,
-        position: 'topleft',
-        text: 'Search',
-        title: 'Testing'
+            geocoder: new L.Control.Geocoder.Nominatim(),
+            collapsed: false,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
         }).addTo(map);
-          var marker; 
-          var panorama; 
-          function initializeStreetView(latlng) {
-              var streetViewContainer = document.getElementById('streetViewContainer');
-              if (!streetViewContainer) {
-                  console.error('Contêiner do Street View não encontrado.');
-                  return;
-              }
-              streetViewContainer.style.display = 'block'; 
-              if (!panorama) {
-                  panorama = new google.maps.StreetViewPanorama(streetViewContainer, {
-                      position: latlng,
-                      pov: { heading: 210, pitch: 10 },
-                      zoom: 1,
-                      zoomControl: false,
-                      fullscreenControl: false,
-                      mapTypeControl: false,
-                      rotateControl: false,
-                  });
-              } else {
-                  panorama.setPosition(latlng);
-              }
-          }
-
-          osmGeocoder.on('markgeocode', function (e) {
-              var latlng = e.geocode.center;
-              var address = e.geocode.name;
-
-              if (marker) {
-                  map.removeLayer(marker);
-              }
-
-              marker = L.marker(latlng, { draggable: true }).addTo(map)
-                  .bindPopup(`<a href="https://www.google.com/maps?q=&layer=c&cbll=${latlng.lat},${latlng.lng}&cbp=11,0,0,0,0" target="_blank">Mova o marcador para local desejado.</a>`)
-                  .openPopup();
-
-              marker.on('dragend', function () {
-                  var newLatLng = marker.getLatLng();
-                  initializeStreetView(newLatLng);
-                  marker.setPopupContent(`<a href="https://www.google.com/maps?q=&layer=c&cbll=${newLatLng.lat},${newLatLng.lng}&cbp=11,0,0,0,0" target="_blank">Mova o marcador para local desejado.</a>`);
-                  marker.openPopup();
-              });
-
-              initializeStreetView(latlng);
-          });
+        
+        osmGeocoder.on('markgeocode', function(e) {
+            var bbox = e.geocode.bbox;
+            var latlng = e.geocode.center;
+            map.fitBounds(bbox);
+            var marker = L.marker(latlng).addTo(map)
+                .bindPopup(e.geocode.name)
+                .openPopup();
+        });
 
     //     osmGeocoder.on('markgeocode', function(event) {
     //     document.getElementById('infoDiv').style.display = 'block';
