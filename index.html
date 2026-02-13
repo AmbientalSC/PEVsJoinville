@@ -233,7 +233,20 @@
                 },
                 mouseover: highlightFeature,
             });
-            var popupContent = '<table>\n                    <tr>\n                        <td>' + (feature.properties['PEV'] !== null ? autolinker.link(feature.properties['PEV'].toLocaleString()) : '') + '</td>\n                    <tr>\n                </table>';
+            var popupContent = '<table>\n' +
+                '    <tr>\n' +
+                '        <th scope="row">PEV:</th>\n' +
+                '        <td>' + (feature.properties['PEV'] !== null ? autolinker.link(feature.properties['PEV'].toLocaleString()) : '') + '</td>\n' +
+                '    </tr>\n' +
+                '    <tr>\n' +
+                '        <th scope="row">ENDEREÇO:</th>\n' +
+                '        <td>' + (feature.properties['ENDERE_O'] !== null ? autolinker.link(feature.properties['ENDERE_O'].toLocaleString()) : '') + '</td>\n' +
+                '    </tr>\n' +
+                '    <tr>\n' +
+                '        <th scope="row">COMPLEMENTO:</th>\n' +
+                '        <td>' + (feature.properties['COMPLEMENT'] !== null ? autolinker.link(feature.properties['COMPLEMENT'].toLocaleString()) : '') + '</td>\n' +
+                '    </tr>\n' +
+                '</table>';
             layer.bindPopup(popupContent, {maxHeight: 400});
             var popup = layer.getPopup();
             var content = popup.getContent();

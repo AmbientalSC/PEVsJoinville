@@ -2797,7 +2797,7 @@ var json_PEVs_vidro4_2 = {
         "type": "Feature",
         "properties": {
             "ID": "6",
-            "PEV": "Ponto de Entrega Voluntária - Caçamba",
+            "PEV": "Ponto de coleta - contentor 1000 l",
             "ENDERE_O": "R. Joinville, 13500 - Centro (Pirabeiraba), Joinville - SC, 89239-220",
             "COMPLEMENT": "Subpref. Pirabeiraba",
             "SETOR": null,
@@ -3058,6 +3058,20 @@ var json_PEVs_vidro4_2 = {
         "geometry": {
             "type": "Point",
             "coordinates": [-48.861323796008818, -26.304352511692731]
+        }
+    },{
+        "type": "Feature",
+        "properties": {
+            "ID": "999",
+            "PEV": "Ponto de Entrega Voluntária - Caçamba",
+            "ENDERE_O": "Rua São Brás, 184 – Vila Nova – 89237-400, Joinville – SC  ",
+            "COMPLEMENT": "Unidade Regional de Obras Oeste",
+            "SETOR": null,
+            "LINK": null
+        },
+        "geometry": {
+            "type": "Point",
+            "coordinates": [-48.90295158804373, -26.28545663687089]
         }
     }, {
         "type": "Feature",
